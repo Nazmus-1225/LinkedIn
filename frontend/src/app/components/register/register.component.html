@@ -1,1 +1,23 @@
-<p>register works!</p>
+<!-- login.component.html -->
+<div class="login-container" *ngIf="!isAuthenticated">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="username" id="username" name="username" [(ngModel)]="username" required>
+      </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    </div>
+    <button class="login-button" (click)="signup()">Register</button>
+  <div class="signup-link">
+    Already have an account? <a routerLink="/login">Login</a>
+  </div>
+</div>
+<div class="login-container" *ngIf="isAuthenticated">
+  <h3>You are already signed in</h3>
+</div>
+

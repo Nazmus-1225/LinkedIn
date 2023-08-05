@@ -1,1 +1,14 @@
-<p>notification works!</p>
+<div *ngIf="isAuthenticated">
+   <h2>Notifications</h2>   
+    <div *ngFor="let post of postData.posts">
+      <div id="posts">
+          <h6>{{post.username}} posted "{{post.text}}" on {{ post.datePosted|date:"medium" }}</h6>
+        <br>
+      </div>
+    </div>
+</div>
+<div *ngIf="!isAuthenticated" class="login-container">
+  <h3>Please sign in first</h3>
+</div>
+
+

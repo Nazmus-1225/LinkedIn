@@ -4,6 +4,6 @@ const notificationController = require("../controllers/notification.controller")
 const authMiddleware = require("../middleware/auth");
 
 // Get all notifications route (requires authentication)
-router.get("/notifications", authMiddleware.verifyToken, notificationController.getAllNotifications);
+router.post("/notifications", authMiddleware.verifyToken(true), notificationController.getAllNotifications);
 
 module.exports = router;

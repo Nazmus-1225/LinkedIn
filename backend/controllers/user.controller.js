@@ -35,6 +35,13 @@ exports.signup = async (req, res) => {
 
 
 exports.signin = async (req, res) => {
+
+  if (req.user) {
+    return res.status(200).send({
+      message: "You are already signed in.",
+    });
+  }
+  
   try {
     const user = await User.findOne({ email: req.body.email }).exec();
 
@@ -95,9 +102,11 @@ exports.getProfile = async (req, res) => {
 exports.getAuth = async (req, res) => {
   try {
     res.status(200).send({
-        message: req.user
+        message: req.user,
+        isAuthenticated: 'true'
     });
   } catch (err) {
-    res.status(500).send({ message: "Error while fetching user information." });
+    res.status(500).send({ message: "Error while fetching user information.",
+    isAuthenticated: 'false' });
   }
 };

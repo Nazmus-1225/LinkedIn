@@ -8,7 +8,7 @@ const checkDuplicateEmail = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
-        res.status(400).send({ message: "Failed! Email is already in use!" });
+        res.status(200).send({ message: "Failed! Email is already in use!" });
         return;
       }
       next();
@@ -20,27 +20,32 @@ const checkDuplicateEmail = (req, res, next) => {
 
 
 
-verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+verifyToken = (requireToken) => (req, res, next) => {
+  let token = req.body.token;
+  console.log(req);
 
-  if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
+  if (requireToken && !token) {
+    return res.status(403).send({ message: "No token provided!", isAuthenticated: false });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!",
-      });
-    }
+  if (token) {
+    jwt.verify(token, config.secret, (err, decoded) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          return next();
+        }
+        return res.status(401).send({ message: "Unauthorized!", isAuthenticated: false });
+      }
 
-    // Set the email property on req.user
-    req.user = {
-      email: decoded.email,
-    };
-
+      // Set the email property on req.user
+      req.user = {
+        email: decoded.email,
+      };
+      next();
+    });
+  } else {
     next();
-  });
+  }
 };
 
 

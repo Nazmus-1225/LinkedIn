@@ -1,6 +1,5 @@
 <!-- login.component.html -->
-<div class="login-container">
-    <form>
+<div class="login-container" *ngIf="!isAuthenticated">
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" [(ngModel)]="email" required>
@@ -9,10 +8,12 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" [(ngModel)]="password" required>
       </div>
-      <button class="login-button">Login</button>
-    </form>
+      <button class="login-button" (click)="signin()">Login</button>
     <div class="signup-link">
       Don't have an account? <a routerLink="/signup">Sign up</a>
     </div>
+  </div>
+  <div class="login-container" *ngIf="isAuthenticated">
+    <h3>You are already signed in</h3>
   </div>
   

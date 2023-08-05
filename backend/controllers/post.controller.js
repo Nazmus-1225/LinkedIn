@@ -51,7 +51,7 @@ exports.getAllPosts = async (req, res) => {
       },
     ]);
 
-    res.status(200).send(postsWithUsername);
+    res.status(200).send({posts:postsWithUsername});
   } catch (err) {
     console.error("Error while fetching posts:", err);
     res.status(500).send({ message: "Error while fetching posts." });

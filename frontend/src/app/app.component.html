@@ -1,4 +1,13 @@
 <div class="linkedin-background">
   <img src="assets/download.png" alt="LinkedIn Logo" class="linkedin-logo">
 </div>
+
+<div *ngIf="isAuthenticated" id="options" class="options ml-auto">
+  <a routerLink="/profile" class="btn btn-outline-primary">View Profile</a>
+  <a routerLink="/feed" class="btn btn-outline-primary">Feed</a>
+  <a routerLink="/notifications" class="btn btn-outline-primary">Notifications</a>
+  <button class="btn btn-outline-primary" (click)="logout()">Logout</button>
+</div>
+
+
 <router-outlet></router-outlet>

@@ -1,1 +1,32 @@
-<p>profile works!</p>
+
+<div *ngIf="isAuthenticated">
+  <div id="newPost">
+    <form (ngSubmit)="onSubmit()">
+      <label for="text">Enter Text:</label>
+      <input type="text" name="text" [(ngModel)]="textInput" required>
+  
+      <label for="image">Upload Image:</label>
+      <input type="file" (change)="onFileSelected($event)" accept="image/*" required>
+  
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+  
+    <div id="profile">
+        <h1>Profile</h1>
+        <p>{{profileData.user.username}}</p>
+        <p>{{profileData.user.email}}</p>
+      </div>
+      
+      <div *ngFor="let post of profileData.posts">
+        <div id="posts">
+            <small>{{ post.datePosted|date:"medium" }}</small>
+            <h4>{{ post.text }}</h4>
+            <img *ngIf="post.hasImage" [src]="'http://localhost:9000/linkedin/'+post.fileURL" alt="Post Image">
+          <br>
+        </div>
+      </div>
+</div>
+<div *ngIf="!isAuthenticated" class="login-container">
+    <h3>Please sign in first</h3>
+</div>

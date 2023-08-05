@@ -4,13 +4,13 @@ const userController = require("../controllers/user.controller");
 const authMiddleware = require("../middleware/auth");
 
 // Signup route
-router.post("/signup", authMiddleware.checkDuplicateEmail, userController.signup);
+router.post("/signup", authMiddleware.verifyToken(false),authMiddleware.checkDuplicateEmail, userController.signup);
 
 // Signin route
-router.post("/signin", userController.signin);
-router.get("/auth", authMiddleware.verifyToken,userController.getAuth);
+router.post("/signin", authMiddleware.verifyToken(false),userController.signin);
+router.post("/auth", authMiddleware.verifyToken(true),userController.getAuth);
 
 // Profile route (requires authentication)
-router.get("/profile", authMiddleware.verifyToken, userController.getProfile);
+router.post("/profile", authMiddleware.verifyToken(true), userController.getProfile);
 
 module.exports = router;

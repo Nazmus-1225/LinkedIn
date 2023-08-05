@@ -6,29 +6,19 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { AuthService } from './services/auth.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    // Get the access token from localStorage
-    const accessToken = localStorage.getItem('access_token');
+  constructor(private authService: AuthService) {}
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
+    const authToken = this.authService.getToken();
 
-    // Clone the request if the access token is available
-    if (accessToken) {
-      const clonedRequest = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+    // Clone the request and add the JWT token to the request body
+    const authRequest = request.clone({
+      body: { ...request.body, token: authToken }
+    });
 
-      // Pass the cloned request to the next handler
-      return next.handle(clonedRequest);
-    } else {
-      // If the access token is not available, continue with the original request
-      return next.handle(req);
-    }
+    // Pass the modified request to the next interceptor in the chain, or to the server if there are no more interceptors
+    return next.handle(authRequest);
   }
 }

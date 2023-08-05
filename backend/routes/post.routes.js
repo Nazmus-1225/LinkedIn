@@ -8,9 +8,9 @@ const multer = require("multer");
 const upload = multer({ dest: 'uploads/' });
 
 // Get all posts route (requires authentication)
-router.get("/posts", authMiddleware.verifyToken, postController.getAllPosts);
+router.post("/posts", authMiddleware.verifyToken(true), postController.getAllPosts);
 
 // Create a new post route (requires authentication)
-router.post("/posts", authMiddleware.verifyToken, upload.single("image"), postController.createPost);
+router.post("/post", authMiddleware.verifyToken(true), upload.single("image"), postController.createPost);
 
 module.exports = router;
